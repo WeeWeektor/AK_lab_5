@@ -5,6 +5,6 @@
 
 #include <linux/types.h>
 
-extern void print_hello(uint param);
+extern int print_hello(uint param);
 
 #endif /* HELLO1_H */
