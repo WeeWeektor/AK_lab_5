@@ -19,8 +19,7 @@ struct hello_data {
 
 static LIST_HEAD(hello_list);
 
-void print_hello(uint param)
-{
+int print_hello(uint param) {
 	struct hello_data *item;
 	uint i;
 
@@ -30,13 +29,13 @@ void print_hello(uint param)
 		pr_warn("Warning: param is between 5 and 10\n");
 	} else if (param > 10) {
 		pr_err("Error: param is greater than 10\n");
-		return;
+		return -EINVAL;
 	}
 
 	for (i = 0; i < param; i++) {
 		item = kmalloc(sizeof(*item), GFP_KERNEL);
 		if (!item)
-			return;
+			return -EINVAL;
 
 		item->time_before = ktime_get();
 		pr_info("Hello, world!\n");
@@ -44,6 +43,8 @@ void print_hello(uint param)
 
 		list_add_tail(&item->list, &hello_list);
 	}
+
+	return 0;
 }
 EXPORT_SYMBOL(print_hello);
 
